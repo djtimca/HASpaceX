@@ -1,0 +1,16 @@
+{
+  "domain": "spacex",
+  "name": "SpaceX Launches and Starman",
+  "config_flow": true,
+  "documentation": "https://www.home-assistant.io/integrations/spacex",
+  "requirements": [
+    "spacexpypi==0.0.1"
+  ],
+  "ssdp": [],
+  "zeroconf": [],
+  "homekit": {},
+  "dependencies": [],
+  "codeowners": [
+    "@djtimca"
+  ]
+}
