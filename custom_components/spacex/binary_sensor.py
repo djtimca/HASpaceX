@@ -112,10 +112,10 @@ class SpaceXBinarySensor(BinarySensorEntity):
             self.attrs["last_updated"] = launch_data.get("last_date_update")
             if launch_data.get("is_tentative") is True:
                 self._state = False
-                self._icon = "mdi:check-circle"
+                self._icon = "mdi:do-not-disturb"
             else:
                 self._state = True
-                self._icon = "mdi:do-not-disturb"
+                self._icon = "mdi:check-circle"
 
         elif self._kind == "spacex_launch_24_hour_warning":
             if launch_data.get("launch_date_unix") < (
