@@ -152,28 +152,6 @@ class SpaceXSensor(Entity):
         """Return the state."""
         return self._state
 
-    @property
-    def device_info(self):
-        """Define the device for the entity registry."""
-        this_device_info = {}
-
-        if self._device_identifier == "spacexlaunch":
-            this_device_info = {
-                "identifiers": {DOMAIN, "spacexlaunch"},
-                "name": "SpaceX Next Launch",
-                "manufacturer": "SpaceX",
-                "model": "Rocket Launch",
-            }
-        else:
-            this_device_info = {
-                "identifiers": {DOMAIN, "spacexstarman"},
-                "name": "SpaceX Starman",
-                "manufacturer": "SpaceX",
-                "model": "Starman Tesla Roadster",
-            }
-
-        return this_device_info
-
     async def async_update(self):
         """Update SpaceX Binary Sensor Entity."""
         await self.coordinator.async_request_refresh()
@@ -194,6 +172,8 @@ class SpaceXSensor(Entity):
             self._state = datetime.datetime.fromtimestamp(
                 launch_data.get("launch_date_unix")
             ).strftime("%d-%b-%Y")
+            self.attrs["launch_date_unix"] = launch_data.get("launch_date_unix")
+            self.attrs["launch_date_utc"] = launch_data.get("launch_date_utc")
 
         elif self._kind == "spacex_next_launch_time":
             self._state = datetime.datetime.fromtimestamp(

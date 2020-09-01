@@ -91,16 +91,6 @@ class SpaceXBinarySensor(BinarySensorEntity):
         """Return the state."""
         return self._state
 
-    @property
-    def device_info(self):
-        """Define the device for the entity registry."""
-        return {
-            "identifiers": {DOMAIN, "spacexlaunch"},
-            "name": "SpaceX Next Launch",
-            "manufacturer": "SpaceX",
-            "model": "Rocket Launch",
-        }
-
     async def async_update(self):
         """Update SpaceX Binary Sensor Entity."""
         await self.coordinator.async_request_refresh()

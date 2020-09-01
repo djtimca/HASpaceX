@@ -18,7 +18,7 @@ Sensors include:
 
 ## Install
 
-Once installed, go to Configuration -> Integrations and click the + to add a new integration.
+Once installed this repository as a custom repository in HACS or by copying the contents of the spacex folder into your custom_components/spacex folder and rebooting your Home Assistant, go to Configuration -> Integrations and click the + to add a new integration.
 
 Search for SpaceX and you will see the integration available.
 
