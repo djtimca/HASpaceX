@@ -165,7 +165,8 @@ class SpaceXSensor(Entity):
         if self._kind == "spacex_next_launch_mission":
             self._state = launch_data.get("mission_name")
             self.attrs["mission_patch"] = launch_data["links"].get("mission_patch")
-            self.attrs["details"] = launch_data.get("details")[0:255]
+            if launch_data.get("details") is not None:
+                self.attrs["details"] = launch_data.get("details")[0:255]
             self.attrs["video_link"] = launch_data["links"].get("video_link")
 
         elif self._kind == "spacex_next_launch_day":
