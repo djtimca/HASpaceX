@@ -2,7 +2,8 @@
   "domain": "spacex",
   "name": "SpaceX Launches and Starman",
   "config_flow": true,
-  "documentation": "https://www.home-assistant.io/integrations/spacex",
+  "documentation": "https://github.com/djtimca/haspacex",
+  "issue_tracker": "https://github.com/djtimca/HASpaceX/issues",
   "requirements": [
     "spacexpypi==0.0.2"
   ],
