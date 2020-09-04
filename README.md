@@ -13,6 +13,12 @@ Sensors include:
 - Next Launch Site
 - Next Launch Alert (Binary Sensor) - Launch in the next 24 hours
 - Next Launch Alert (Binary Sensor) - Launch in the next 20 minutes
+- Latest Launch Day
+- Latest Launch Time
+- Latest Launch Mission
+- Latest Launch Payload
+- Latest Launch Rocket
+- Latest Launch Site
 - Starman Current Speed
 - Starman Current Distance from Earth
 

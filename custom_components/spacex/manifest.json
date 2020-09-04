@@ -4,7 +4,7 @@
   "config_flow": true,
   "documentation": "https://www.home-assistant.io/integrations/spacex",
   "requirements": [
-    "spacexpypi==0.0.1"
+    "spacexpypi==0.0.2"
   ],
   "ssdp": [],
   "zeroconf": [],

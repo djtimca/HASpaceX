@@ -81,6 +81,66 @@ async def async_setup_entry(hass, entry, async_add_entities, discovery_info=None
     sensors.append(
         SpaceXSensor(
             coordinator,
+            "Latest Launch Mission",
+            "spacex_latest_launch_mission",
+            "mdi:information-outline",
+            "spacexlaunch",
+        )
+    )
+
+    sensors.append(
+        SpaceXSensor(
+            coordinator,
+            "Latest Launch Day",
+            "spacex_latest_launch_day",
+            "mdi:calendar",
+            "spacexlaunch",
+        )
+    )
+
+    sensors.append(
+        SpaceXSensor(
+            coordinator,
+            "Latest Launch Time",
+            "spacex_latest_launch_time",
+            "mdi:clock-outline",
+            "spacexlaunch",
+        )
+    )
+
+    sensors.append(
+        SpaceXSensor(
+            coordinator,
+            "Latest Launch Site",
+            "spacex_latest_launch_site",
+            "mdi:map-marker",
+            "spacexlaunch",
+        )
+    )
+
+    sensors.append(
+        SpaceXSensor(
+            coordinator,
+            "Latest Launch Rocket",
+            "spacex_latest_launch_rocket",
+            "mdi:rocket",
+            "spacexlaunch",
+        )
+    )
+
+    sensors.append(
+        SpaceXSensor(
+            coordinator,
+            "Latest Launch Payload",
+            "spacex_latest_launch_payload",
+            "mdi:package",
+            "spacexlaunch",
+        )
+    )
+
+    sensors.append(
+        SpaceXSensor(
+            coordinator,
             "Starman Speed",
             "spacex_starman_speed",
             "mdi:account-star",
@@ -159,6 +219,7 @@ class SpaceXSensor(Entity):
         coordinator_data = self.coordinator.data
         starman_data = coordinator_data[0]
         launch_data = coordinator_data[1]
+        latest_launch_data = coordinator_data[2]
 
         self.attrs["last_updated"] = launch_data.get("last_date_update")
 
@@ -239,6 +300,86 @@ class SpaceXSensor(Entity):
                 + " lbs"
             )
             self.attrs["orbit"] = launch_data["rocket"]["second_stage"]["payloads"][
+                0
+            ].get("orbit")
+
+        elif self._kind == "spacex_latest_launch_mission":
+            self._state = latest_launch_data.get("mission_name")
+            self.attrs["mission_patch"] = latest_launch_data["links"].get("mission_patch")
+            if latest_launch_data.get("details") is not None:
+                self.attrs["details"] = latest_launch_data.get("details")[0:255]
+            self.attrs["video_link"] = latest_launch_data["links"].get("video_link")
+
+        elif self._kind == "spacex_latest_launch_day":
+            self._state = datetime.datetime.fromtimestamp(
+                latest_launch_data.get("launch_date_unix")
+            ).strftime("%d-%b-%Y")
+            self.attrs["launch_date_unix"] = latest_launch_data.get("launch_date_unix")
+            self.attrs["launch_date_utc"] = latest_launch_data.get("launch_date_utc")
+
+        elif self._kind == "spacex_latest_launch_time":
+            self._state = datetime.datetime.fromtimestamp(
+                latest_launch_data.get("launch_date_unix")
+            ).strftime("%I:%M %p")
+
+        elif self._kind == "spacex_latest_launch_site":
+            self._state = latest_launch_data["launch_site"].get("site_name_long")
+            self.attrs["short_name"] = latest_launch_data["launch_site"].get("site_name")
+
+        elif self._kind == "spacex_latest_launch_rocket":
+            self._state = latest_launch_data["rocket"].get("rocket_name")
+            core_counter = 1
+            for this_core in latest_launch_data["rocket"]["first_stage"].get("cores"):
+                self.attrs["core_" + str(core_counter) + "_serial"] = this_core.get(
+                    "core_serial"
+                )
+                self.attrs["core_" + str(core_counter) + "_flight"] = this_core.get(
+                    "flight"
+                )
+                self.attrs["core_" + str(core_counter) + "_block"] = this_core.get(
+                    "block"
+                )
+                self.attrs[
+                    "core_" + str(core_counter) + "_landing_intent"
+                ] = this_core.get("landing_intent")
+                self.attrs["core_" + str(core_counter) + "_lz"] = this_core.get(
+                    "landing_vehicle"
+                )
+                core_counter = core_counter + 1
+            self.attrs["fairings_reused"] = latest_launch_data["rocket"]["fairings"].get(
+                "reused"
+            )
+
+        elif self._kind == "spacex_latest_launch_payload":
+            self._state = latest_launch_data["rocket"]["second_stage"]["payloads"][0].get(
+                "payload_id"
+            )
+            self.attrs["nationality"] = latest_launch_data["rocket"]["second_stage"][
+                "payloads"
+            ][0].get("nationality")
+            self.attrs["manufacturer"] = latest_launch_data["rocket"]["second_stage"][
+                "payloads"
+            ][0].get("manufacturer")
+            self.attrs["payload_type"] = latest_launch_data["rocket"]["second_stage"][
+                "payloads"
+            ][0].get("payload_type")
+            self.attrs["payload_mass"] = (
+                str(
+                    latest_launch_data["rocket"]["second_stage"]["payloads"][0].get(
+                        "payload_mass_kg"
+                    )
+                )
+                + " kg"
+            )
+            self.attrs["payload_mass_us"] = (
+                str(
+                    latest_launch_data["rocket"]["second_stage"]["payloads"][0].get(
+                        "payload_mass_lbs"
+                    )
+                )
+                + " lbs"
+            )
+            self.attrs["orbit"] = latest_launch_data["rocket"]["second_stage"]["payloads"][
                 0
             ].get("orbit")
 

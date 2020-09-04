@@ -34,10 +34,12 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry):
         _LOGGER.debug("Updating the coordinator data.")
         spacex_starman = await api.get_roadster_status()
         spacex_next_launch = await api.get_next_launch()
+        spacex_latest_launch = await api.get_latest_launch()
 
         return [
             spacex_starman,
             spacex_next_launch,
+            spacex_latest_launch,
         ]
 
     coordinator = DataUpdateCoordinator(
