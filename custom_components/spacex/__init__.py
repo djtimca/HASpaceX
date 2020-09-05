@@ -8,7 +8,7 @@ import voluptuous as vol
 
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant
-from homeassistant.exceptions import ConfigEntryNotReady
+from homeassistant.exceptions import ConfigEntryNotReady, PlatformNotReady
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator
 
 from .const import COORDINATOR, DOMAIN, SPACEX_API
@@ -32,9 +32,24 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry):
     async def async_update_data():
         """Fetch data from API endpoint."""
         _LOGGER.debug("Updating the coordinator data.")
-        spacex_starman = await api.get_roadster_status()
-        spacex_next_launch = await api.get_next_launch()
-        spacex_latest_launch = await api.get_latest_launch()
+
+        try:
+            spacex_starman = await api.get_roadster_status()
+        except ConnectionError as e:
+            _LOGGER.info("SpaceX API: %s", e)
+            raise PlatformNotReady
+
+        try:
+            spacex_next_launch = await api.get_next_launch()
+        except ConnectionError as e:
+            _LOGGER.info("SpaceX API: %s", e)
+            raise PlatformNotReady
+
+        try:
+            spacex_latest_launch = await api.get_latest_launch()
+        except ConnectionError as e:
+            _LOGGER.info("SpaceX API: %s", e)
+            raise PlatformNotReady
 
         return [
             spacex_starman,
