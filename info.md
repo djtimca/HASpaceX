@@ -3,8 +3,10 @@
 This integration will provide sensors for SpaceX Next Launch and Starman information from the SpaceX APIs.
 
 Sensors include:
-- Next Launch Day
-- Next Launch Time
+- Next Confirmed Launch Day
+- Next Confirmed Launch Time
+- Next Launch Day (regardless of confirmed)
+- Next Launch Time (regardless of confirmed)
 - Next Launch Mission
 - Next Launch Payload
 - Next Launch Rocket
