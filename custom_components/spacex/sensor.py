@@ -203,7 +203,7 @@ class SpaceXSensor(CoordinatorEntity):
         super().__init__(coordinator=coordinator)
 
         self._name = name
-        self._unique_id = ENTITY_ID_FORMAT.format(entity_id)
+        self._unique_id = f"spacex_{entity_id}"
         self._state = None
         self._icon = icon
         self._kind = entity_id
