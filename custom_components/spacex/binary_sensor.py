@@ -101,7 +101,7 @@ class SpaceXBinarySensor(BinarySensorEntity):
     @property
     def icon(self):
         """Return the icon for this entity."""
-        launch_data = self.coordinator.data[1]
+        launch_data = self.coordinator.data["next_launch"]
 
         if self._kind == "spacex_next_launch_confirmed":
             if launch_data.get("is_tentative") is True:
@@ -115,7 +115,7 @@ class SpaceXBinarySensor(BinarySensorEntity):
     @property
     def device_state_attributes(self):
         """Return the attributes."""
-        launch_data = self.coordinator.data[1]
+        launch_data = self.coordinator.data["next_launch"]
 
         self.attrs["last_updated"] = launch_data["last_date_update"]
 
