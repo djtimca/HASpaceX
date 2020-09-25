@@ -17,7 +17,7 @@ from .const import ATTR_IDENTIFIERS, ATTR_MANUFACTURER, ATTR_MODEL, DOMAIN, COOR
 _LOGGER = logging.getLogger(__name__)
 
 
-async def async_setup_entry(hass, entry, async_add_entities, discovery_info=None):
+async def async_setup_entry(hass, entry, async_add_entities):
     """Set up the binary sensor platforms."""
 
     coordinator = hass.data[DOMAIN][entry.entry_id][COORDINATOR]
@@ -53,7 +53,7 @@ async def async_setup_entry(hass, entry, async_add_entities, discovery_info=None
         )
     )
 
-    async_add_entities(sensors, update_before_add=True)
+    async_add_entities(sensors)
 
 
 class SpaceXBinarySensor(BinarySensorEntity):
@@ -117,7 +117,7 @@ class SpaceXBinarySensor(BinarySensorEntity):
         """Return the attributes."""
         launch_data = self.coordinator.data[1]
 
-        self.attrs["last_updated"] = launch_data.get("last_date_update")
+        self.attrs["last_updated"] = launch_data["last_date_update"]
 
         return self.attrs
 
@@ -142,26 +142,26 @@ class SpaceXBinarySensor(BinarySensorEntity):
     @property
     def is_on(self) -> bool:
         """Return the state."""
-        launch_data = self.coordinator.data[1]
+        launch_data = self.coordinator.data["next_launch"]
 
         if self._kind == "spacex_next_launch_confirmed":
-            if launch_data.get("is_tentative") is True:
+            if launch_data["is_tentative"] is True:
                 return False
             else:
                 return True
 
         elif self._kind == "spacex_launch_24_hour_warning":
-            if launch_data.get("launch_date_unix") < (
+            if launch_data["launch_date_unix"] < (
                 time.time() + (24 * 60 * 60)
-            ) and launch_data.get("launch_date_unix") > (time.time()):
+            ) and launch_data["launch_date_unix"] > (time.time()):
                 return True
             else:
                 return False
 
         elif self._kind == "spacex_launch_20_minute_warning":
-            if launch_data.get("launch_date_unix") < (
+            if launch_data["launch_date_unix"] < (
                 time.time() + (20 * 60)
-            ) and launch_data.get("launch_date_unix") > (time.time()):
+            ) and launch_data["launch_date_unix"] > (time.time()):
                 return True
             else:
                 return False
