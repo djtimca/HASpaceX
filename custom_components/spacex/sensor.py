@@ -3,6 +3,7 @@
 import datetime
 import logging
 
+from homeassistant.util.dt import as_local
 from homeassistant.components.sensor import ENTITY_ID_FORMAT
 from homeassistant.const import LENGTH_KILOMETERS, SPEED_KILOMETERS_PER_HOUR, ATTR_NAME
 from homeassistant.helpers.entity import Entity
@@ -426,14 +427,14 @@ class SpaceXSensor(CoordinatorEntity):
             self._state = launch_data["mission_name"]
 
         elif self._kind == "spacex_next_launch_day":
-            self._state = datetime.datetime.fromtimestamp(
+            self._state = as_local(datetime.datetime.fromtimestamp(
                 launch_data["launch_date_unix"]
-            ).strftime("%d-%b-%Y")
+            )).strftime("%d-%b-%Y")
             
         elif self._kind == "spacex_next_launch_time":
-            self._state = datetime.datetime.fromtimestamp(
+            self._state = as_local(datetime.datetime.fromtimestamp(
                 launch_data["launch_date_unix"]
-            ).strftime("%I:%M %p")
+            )).strftime("%I:%M %p")
 
         elif self._kind == "spacex_next_confirmed_launch_day":
             if launch_data["is_tentative"] is True:
