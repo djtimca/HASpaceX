@@ -1,9 +1,8 @@
 """Definition and setup of the SpaceX Binary Sensors for Home Assistant."""
 
-import datetime
 import logging
 
-from homeassistant.util.dt import as_local
+from homeassistant.util.dt import as_local, utc_from_timestamp
 from homeassistant.components.sensor import ENTITY_ID_FORMAT
 from homeassistant.const import LENGTH_KILOMETERS, SPEED_KILOMETERS_PER_HOUR, ATTR_NAME
 from homeassistant.helpers.entity import Entity
@@ -427,12 +426,12 @@ class SpaceXSensor(CoordinatorEntity):
             self._state = launch_data["mission_name"]
 
         elif self._kind == "spacex_next_launch_day":
-            self._state = as_local(datetime.datetime.fromtimestamp(
+            self._state = as_local(utc_from_timestamp(
                 launch_data["launch_date_unix"]
             )).strftime("%d-%b-%Y")
             
         elif self._kind == "spacex_next_launch_time":
-            self._state = as_local(datetime.datetime.fromtimestamp(
+            self._state = as_local(utc_from_timestamp(
                 launch_data["launch_date_unix"]
             )).strftime("%I:%M %p")
 
@@ -440,7 +439,7 @@ class SpaceXSensor(CoordinatorEntity):
             if launch_data["is_tentative"] is True:
                 self._state = None
             else:
-                self._state = as_local(datetime.datetime.fromtimestamp(
+                self._state = as_local(utc_from_timestamp(
                     launch_data["launch_date_unix"]
                 )).strftime("%d-%b-%Y")
 
@@ -448,7 +447,7 @@ class SpaceXSensor(CoordinatorEntity):
             if launch_data["is_tentative"] is True:
                 self._state = None
             else:
-                self._state = as_local(datetime.datetime.fromtimestamp(
+                self._state = as_local(utc_from_timestamp(
                     launch_data["launch_date_unix"]
                 )).strftime("%I:%M %p")
 
@@ -467,14 +466,14 @@ class SpaceXSensor(CoordinatorEntity):
             self._state = latest_launch_data["mission_name"]
             
         elif self._kind == "spacex_latest_launch_day":
-            self._state = datetime.datetime.fromtimestamp(
+            self._state = as_local(utc_from_timestamp(
                 latest_launch_data["launch_date_unix"]
-            ).strftime("%d-%b-%Y")
+            )).strftime("%d-%b-%Y")
             
         elif self._kind == "spacex_latest_launch_time":
-            self._state = datetime.datetime.fromtimestamp(
+            self._state = as_local(utc_from_timestamp(
                 latest_launch_data["launch_date_unix"]
-            ).strftime("%I:%M %p")
+            )).strftime("%I:%M %p")
 
         elif self._kind == "spacex_latest_launch_site":
             self._state = latest_launch_data["launch_site"]["site_name_long"]
