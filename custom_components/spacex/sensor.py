@@ -440,17 +440,17 @@ class SpaceXSensor(CoordinatorEntity):
             if launch_data["is_tentative"] is True:
                 self._state = None
             else:
-                self._state = datetime.datetime.fromtimestamp(
+                self._state = as_local(datetime.datetime.fromtimestamp(
                     launch_data["launch_date_unix"]
-                ).strftime("%d-%b-%Y")
+                )).strftime("%d-%b-%Y")
 
         elif self._kind == "spacex_next_confirmed_launch_time":
             if launch_data["is_tentative"] is True:
                 self._state = None
             else:
-                self._state = datetime.datetime.fromtimestamp(
+                self._state = as_local(datetime.datetime.fromtimestamp(
                     launch_data["launch_date_unix"]
-                ).strftime("%I:%M %p")
+                )).strftime("%I:%M %p")
 
         elif self._kind == "spacex_next_launch_site":
             self._state = launch_data["launch_site"]["site_name_long"]
