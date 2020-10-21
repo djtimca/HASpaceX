@@ -7,6 +7,7 @@ This integration will provide sensors for SpaceX Next Launch and Starman informa
 Sensors include:
 - Next Confirmed Launch Day
 - Next Confirmed Launch Time
+- Next Launch Countdown
 - Next Launch Day (regardless of confirmed)
 - Next Launch Time (regardless of confirmed)
 - Next Launch Mission
