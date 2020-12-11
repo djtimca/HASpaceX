@@ -31,4 +31,14 @@ Search for SpaceX and you will see the integration available.
 
 Click add, confirm you want to install, and voila... you have the SpaceX Sensors in your Home Assistant.
 
+## Recommended Configuration Changes in Home Assistant
+
+This integration includes a countdown timer sensor which will add a large amount of log entries on changes. It is highly recommended that you make the following change in your configuration.yaml to eliminate those log entries:
+
+```
+recorder:
+  exclude:
+    entities:
+      - sensor.next_launch_countdown
+
 Enjoy!
