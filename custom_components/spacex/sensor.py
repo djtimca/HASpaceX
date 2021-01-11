@@ -319,18 +319,16 @@ class SpaceXSensor(CoordinatorEntity):
         elif self._kind == "spacex_next_launch_rocket":
             core_counter = 1
             for this_core in launch_data["cores_detail"]:
-                self.attrs["core_" + str(core_counter) + "_serial"] = this_core["details"][
-                    "serial"
-                ]
-                self.attrs["core_" + str(core_counter) + "_flight"] = this_core[
+                self.attrs["core_" + str(core_counter) + "_serial"] = this_core.get(
+                    "details",{}).get("serial")
+                self.attrs["core_" + str(core_counter) + "_flight"] = this_core.get(
                     "flight"
-                ]
-                self.attrs["core_" + str(core_counter) + "_block"] = this_core["details"][
-                    "block"
-                ]
+                )
+                self.attrs["core_" + str(core_counter) + "_block"] = this_core.get(
+                    "details",{}).get("block")
                 self.attrs[
                     "core_" + str(core_counter) + "_landing_intent"
-                ] = this_core["landing_attempt"]
+                ] = this_core.get("landing_attempt")
                 
                 if this_core.get("landpad"):
                     self.attrs["core_" + str(core_counter) + "_lz"] = this_core["landpad"][
@@ -346,7 +344,7 @@ class SpaceXSensor(CoordinatorEntity):
                 core_counter = core_counter + 1
 
             if launch_data.get("fairings"):
-                self.attrs["fairings_reused"] = launch_data["fairings"].get(
+                self.attrs["fairings_reused"] = launch_data.get("fairings",{}).get(
                     "reused"
                 )
             else:
