@@ -41,7 +41,7 @@ This integration includes a countdown timer sensor which will add a large amount
 recorder:
   exclude:
     entities:
-      - sensor.next_launch_countdown
+      - sensor.spacex_next_launch_countdown
 ```
 
 Enjoy!
