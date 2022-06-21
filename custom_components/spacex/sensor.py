@@ -370,20 +370,26 @@ class SpaceXSensor(CoordinatorEntity):
                 else:
                     self.attrs["manufacturer"] = "NA"
 
-            self.attrs["payload_type"] = launch_data["payloads_detail"][0]["type"]
-            self.attrs["payload_mass"] = (
-                str(
-                    launch_data["payloads_detail"][0]["mass_kg"]
+            if launch_data["payloads_detail"]:
+                self.attrs["payload_type"] = launch_data["payloads_detail"][0]["type"]
+                self.attrs["payload_mass"] = (
+                    str(
+                        launch_data["payloads_detail"][0]["mass_kg"]
+                    )
+                    + " kg"
                 )
-                + " kg"
-            )
-            self.attrs["payload_mass_us"] = (
-                str(
-                    launch_data["payloads_detail"][0]["mass_lbs"]
+                self.attrs["payload_mass_us"] = (
+                    str(
+                        launch_data["payloads_detail"][0]["mass_lbs"]
+                    )
+                    + " lbs"
                 )
-                + " lbs"
-            )
-            self.attrs["orbit"] = launch_data["payloads_detail"][0]["orbit"]
+                self.attrs["orbit"] = launch_data["payloads_detail"][0]["orbit"]
+            else:
+                self.attrs["payload_type"] = ""
+                self.attrs["payload_mass"] = ""
+                self.attrs["payload_mass_us"] = ""
+           
 
         elif self._kind == "spacex_latest_launch_mission":
             self.attrs["mission_patch"] = latest_launch_data["links"].get("patch",{}).get("large")
